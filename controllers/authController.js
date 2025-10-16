@@ -9,7 +9,7 @@ const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString()
 // Signup (with OTP)
 exports.signup = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, gender, phone } = req.body;
+    const { firstName, lastName, email, password, gender, phone,role } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: "User already exists" });
@@ -18,14 +18,14 @@ exports.signup = async (req, res) => {
     const otp = generateOTP();
 
     const user = new User({
-      firstName, lastName, email, password: hashedPassword, gender, phone,
-      otp, otpExpiry: Date.now() + 5 * 60 * 1000
+      firstName, lastName, email, password: hashedPassword, gender, phone,role,otp, otpExpiry: Date.now() + 5 * 60 * 1000
     });
-    await user.save();
 
     await sendEmail(email, "Verify your email", `Your OTP is ${otp}`);
 
     res.status(201).json({ message: "Signup successful, please verify OTP" });
+    await user.save();
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

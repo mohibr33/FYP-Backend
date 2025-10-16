@@ -3,14 +3,15 @@ const Article = require("../models/article");
 // Add new article (Admin only)
 exports.createArticle = async (req, res) => {
   try {
-    const { title, imageUrl, category, shortDescription, content } = req.body;
+    const { Title, ImageURL, Category, ShortDescription, Content,SourceLink } = req.body;
 
     const article = new Article({
-      title,
-      imageUrl,
-      category,
-      shortDescription,
-      content,
+      Title,
+      ImageURL,
+      Category,
+      ShortDescription,
+      Content,
+      SourceLink,
       createdBy: req.user._id
     });
 
@@ -46,8 +47,8 @@ exports.getArticleById = async (req, res) => {
 // Search articles by title(for admin pannel search bar)
 exports.searchArticlesByTitle = async (req, res) => {
   try {
-    const { title } = req.query;
-    if (!title) {
+    const { Title } = req.query;
+    if (!Title) {
       return res.status(400).json({ error: "Title query parameter is required" });
     }
     const articles = await Article.find({
@@ -59,7 +60,6 @@ exports.searchArticlesByTitle = async (req, res) => {
   }
 };
 
-// ...existing code...
 
 // Update article (Admin only)
 exports.updateArticle = async (req, res) => {

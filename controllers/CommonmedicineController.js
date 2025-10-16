@@ -3,8 +3,8 @@ const CommonMedicine = require("../models/Commonmedicine");
 // Add medicine
 exports.addMedicine = async (req, res) => {
   try {
-    const { title, imageUrl, usage, sideEffects,category } = req.body;
-    const medicine = new CommonMedicine({ title, imageUrl, usage, sideEffects,category });
+    const { title, imageUrl, usage, sideEffect,category ,tags} = req.body;
+    const medicine = new CommonMedicine({ title, imageUrl, usage, sideEffect,category,tags});
     await medicine.save();
     res.status(201).json(medicine);
   } catch (err) {
@@ -15,10 +15,10 @@ exports.addMedicine = async (req, res) => {
 // Update medicine
 exports.updateMedicine = async (req, res) => {
   try {
-    const { title, imageUrl, usage, sideEffects,category } = req.body;
+    const { title, imageUrl, usage, sideEffect ,category,tags } = req.body;
     const updatedMedicine = await CommonMedicine.findByIdAndUpdate(
       req.params.id,
-      { $set: { title, imageUrl, usage, sideEffects,category } },
+      { $set: { title, imageUrl, usage, sideEffect,category,tags } },
       { new: true, runValidators: true }
     );
     if (!updatedMedicine) {
